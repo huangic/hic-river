@@ -45,13 +45,20 @@
 		</layout>
 	</appender>
 	<root>
-		<level value="DEBUG" />
+		<level value="INFO" />
 		<appender-ref ref="CONSOLE" />
 		<!-- 	
 		<appender-ref ref="FILE" />
 		<appender-ref ref="ERRORFILE" />
 		-->
-	</root>	<!-- Red5 -->
+	</root>
+	<logger name="idv.hic.river">
+		<level value="DEBUG" />
+		<appender-ref ref="CONSOLE" />
+	</logger>
+	
+	
+	<!-- Red5 -->
 	<logger name="org.red5.io">
 		<level value="INFO" />
 	</logger>
@@ -150,7 +157,8 @@
 	<!-- Mina -->			
 	<logger name="org.apache.mina">
 		<level value="WARN" />
-	</logger>		<logger name="org.apache.mina.filter">
+	</logger>	
+	<logger name="org.apache.mina.filter">
 		<level value="WARN" />
 	</logger>
 	<logger name="org.apache.mina.filter.thread.ThreadPoolFilter">
