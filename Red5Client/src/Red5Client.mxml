@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:WindowedApplication xmlns:fx="http://ns.adobe.com/mxml/2009" 
+					   xmlns:s="library://ns.adobe.com/flex/spark" 
+					   xmlns:mx="library://ns.adobe.com/flex/mx">
+
+	<fx:Script>
+		
+		
+		
+		<![CDATA[
+			
+		
+			var nc:NetConnection;
+			var videoSend:Video=new Video();
+			var videoRecv:Video=new Video();
+			var nsReciver:NetStream;
+			var nsSend:NetStream;
+			
+			
+			private function netStatus ( event:NetStatusEvent ):void
+			{
+				this.ta_msg.appendText("netStatus: " + event.info.code +"\n");
+				
+			}
+			
+					
+			
+			protected function button1_clickHandler(event:MouseEvent):void
+			{
+				// init Connection
+				
+				nc=new NetConnection();
+				nc.objectEncoding=ObjectEncoding.AMF3;
+				nc.addEventListener( NetStatusEvent.NET_STATUS , netStatus );
+				nc.client=this;
+				
+				
+				nc.connect(this.ti_uri.text,true);
+			
+				
+				nc.call(this.ti_app.text,new Responder(function(ResultObj:Object):void{
+					ta_msg.appendText(ResultObj.toString()+"\n");
+				}		));
+				
+				
+			}
+			
+			public function ServerCall():void{
+				this.ta_msg.appendText("Server Call Function!\n");
+			}
+			
+
+			protected function button2_clickHandler(event:MouseEvent):void
+			{
+				//Show Camera
+				var CameraObj:Camera=Camera.getCamera();
+				
+				if(CameraObj){
+				//videoSend=new Video(320,240);
+				
+				videoSend.attachCamera(CameraObj);
+				//videoSend.visible=true;
+				this.VideoHolder.addChild(videoSend);
+				}
+			
+			}
+			
+			protected function button3_clickHandler(event:MouseEvent):void
+			{
+				//publish
+				
+				if(!nsSend){
+					nsSend=new NetStream(nc);
+				var CameraObj:Camera=Camera.getCamera();
+				if(CameraObj){
+					nsSend.attachCamera(CameraObj);
+										
+				
+					
+					
+				}else{
+					
+				}
+				}
+				nsSend.publish(this.ti_send.text);
+				
+			}
+			
+			protected function button4_clickHandler(event:MouseEvent):void
+			{
+				//Reciver boardCast Play
+										
+				if(!nsReciver){
+				
+				nsReciver=new NetStream(nc);
+				videoRecv.attachNetStream(nsReciver);
+				
+				this.VideoHolderClient.addChild(videoRecv);
+				}
+				//配對的stream 名稱
+				
+				nsReciver.play(this.ti_play.text);
+				
+				
+			}
+			
+			
+
+		]]>
+	</fx:Script>
+
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+		
+		
+		
+		
+	</fx:Declarations>
+	<s:Button x="354" y="142" label="Connect" click="button1_clickHandler(event)"/>
+	<s:TextArea id="ta_msg" x="354" y="265" width="239" height="211"/>
+	<s:TextInput  id="ti_uri" x="419" y="23" width="167" text="rtmp://localhost/Application"/>
+	<s:Label x="385" y="28" text="URI" width="26" height="13"/>
+	<s:Label x="354" y="58" text="AppName" width="56" height="13"/>
+	<s:TextInput id="ti_app" x="419" y="54" width="167" text="testApplication"/>
+	<s:Label x="330" y="86" text="SendStreamID" width="80" height="13"/>
+	<s:TextInput id="ti_send" x="419" y="82" width="167" text="Live"/>
+	<s:Button x="354" y="171" label="Show Camera" click="button2_clickHandler(event)"/>
+	<s:Button x="499" y="141" label="Publish" click="button3_clickHandler(event)"/>
+	<s:Button x="499" y="171" label="Receiver" click="button4_clickHandler(event)"/>
+	<s:SpriteVisualElement x="22" y="28" width="263" height="208" id="VideoHolder">
+	</s:SpriteVisualElement>
+	<s:SpriteVisualElement x="23" y="260" width="263" height="230" id="VideoHolderClient">
+	</s:SpriteVisualElement>
+	<s:Label x="310" y="116" text="ReceiverStreamID" width="102" height="13"/>
+	<s:TextInput id="ti_play" x="419" y="112" width="167" text="Live"/>
+	
+</s:WindowedApplication>
