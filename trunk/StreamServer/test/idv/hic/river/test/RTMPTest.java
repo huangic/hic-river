@@ -43,8 +43,8 @@ public class RTMPTest extends RTMPClient implements IPendingServiceCallback,
 		// RTMPClient client=new RTMPClient();
 
 		ObjectMap params = new ObjectMap();
-		params.put("app", "/Application/BBB");
-		params.put("tcUrl", "rtmp://127.0.0.1/Application/BBB");
+		params.put("app", "/Application/");
+		params.put("tcUrl", "rtmp://127.0.0.1/Application");
 
 		super.connect("127.0.0.1", 1935, params, this);
 
@@ -55,7 +55,7 @@ public class RTMPTest extends RTMPClient implements IPendingServiceCallback,
 		// TODO Auto-generated method stub
 		// Red5.setConnectionLocal(conn);
 		this.invoke("testApplication", null, this);
-		
+		this.disconnect();
 	}
 
 }
