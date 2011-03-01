@@ -7,8 +7,12 @@ import org.red5.server.api.Red5;
 import org.red5.server.api.service.IPendingServiceCall;
 import org.red5.server.api.service.IPendingServiceCallback;
 import org.red5.server.api.service.IServiceCapableConnection;
+import org.red5.server.api.stream.IBroadcastStream;
+import org.red5.server.stream.ClientBroadcastStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import sun.tools.tree.ThisExpression;
 
 
 
@@ -18,7 +22,7 @@ public class TestApplication extends ApplicationAdapter {
 	
 	public String testApplication(){
 		//log.debug("Application testApplication");
-		log.debug("Scpoe:%s",this.scope.getName());
+		//log.debug("Scope:{}",Red5.getConnectionLocal().getClient());
 		
 		
 		//呼叫Client 做測試
@@ -33,46 +37,38 @@ public class TestApplication extends ApplicationAdapter {
 					// TODO Auto-generated method stub
 					Object obj=call.getResult();
 					
-					log.debug("GetClientResult:%s",obj);
+					log.debug("GetClientResult:{}",obj);
 				}
 			}); 
 	    } 
 		
 		
 		
-		return "SHIT!!!";
+		return "Client Call Server Fuinction Success!!";
 		
 	}
 	
 	
+	@Override
+	public void streamPublishStart(IBroadcastStream stream) {
+		super.streamPublishStart(stream);
+		log.debug("Publish start called, name: {}", stream.getName());
+	    try{
+	    stream.saveAs(stream.getPublishedName()+".flv", true);
+	   
+	    }catch(Exception ex){
+	    	
+	    	log.debug(ex.getMessage());
+	    }
+	   
+	}
 	
 	@Override
-	public synchronized boolean connect(IConnection conn, IScope scope,
-			Object[] params) {
-		// TODO Auto-generated method stub
-		
-		log.debug("Application Connedted");
-		
-		return super.connect(conn, scope, params);
-	}
-
-	@Override
-	public synchronized void disconnect(IConnection conn, IScope scope) {
-		// TODO Auto-generated method stub
-		super.disconnect(conn, scope);
-	}
-
-	@Override
-	public synchronized boolean start(IScope scope) {
-		// TODO Auto-generated method stub
-		return super.start(scope);
-	}
-
-	@Override
-	public synchronized void stop(IScope scope) {
-		// TODO Auto-generated method stub
-		super.stop(scope);
-	}
+	 public void streamBroadcastClose(IBroadcastStream stream) {
+	  super.streamBroadcastClose(stream);
+	  ClientBroadcastStream mystream = (ClientBroadcastStream) stream;
+	  mystream.stopRecording();
+	 }
 	
 	
 }
