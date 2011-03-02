@@ -19,14 +19,7 @@
 		<property name="virtualHosts" value="*,localhost, localhost:8080, 127.0.0.1:8080" />
 	</bean>
 	
-	<bean id="BBB.scope" class="org.red5.server.WebScope" init-method="register">
-		<property name="server" ref="red5.server" />
-		<property name="parent" ref="Application.scope" />
-		<property name="context" ref="Application.context" />
-		<property name="handler" ref="Application.handler" />
-		<property name="contextPath" value="/Application/BBB" />
-		<property name="virtualHosts" value="*,localhost, localhost:8080, 127.0.0.1:8080" />
-	</bean>
+	
 	
 	
 	<bean id="Application.handler" class="idv.hic.river.application.TestApplication" />
