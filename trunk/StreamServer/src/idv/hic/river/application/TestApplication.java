@@ -12,8 +12,6 @@ import org.red5.server.stream.ClientBroadcastStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sun.tools.tree.ThisExpression;
-
 
 
 public class TestApplication extends ApplicationAdapter {
@@ -40,13 +38,32 @@ public class TestApplication extends ApplicationAdapter {
 					log.debug("GetClientResult:{}",obj);
 				}
 			}); 
-	    } 
+	   } 
+		
+		
+		
 		
 		
 		
 		return "Client Call Server Fuinction Success!!";
 		
 	}
+	
+	
+
+	public String testScope(){
+		
+		log.debug("Scope:{}",this.getScope().getName());
+		
+		
+		//呼叫Client 做測試
+			
+		
+		return "Client Call Server Fuinction Success!!";
+		
+	}
+	
+	
 	
 	
 	@Override
@@ -69,6 +86,14 @@ public class TestApplication extends ApplicationAdapter {
 	  ClientBroadcastStream mystream = (ClientBroadcastStream) stream;
 	  mystream.stopRecording();
 	 }
+
+
+	@Override
+	public boolean appConnect(IConnection conn, Object[] params) {
+		// TODO Auto-generated method stub
+		return super.appConnect(conn, params);
+	}
+	
 	
 	
 }
